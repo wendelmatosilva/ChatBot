@@ -23,6 +23,13 @@ client.initialize();
 // Função de delay
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
+// Função para verificar o horário de funcionamento
+const isHorarioComercial = () => {
+    const agora = new Date();
+    const hora = agora.getHours();
+    return hora >= 7 && hora < 17;
+};
+
 // Funil de mensagens
 client.on('message', async msg => {
     try {
@@ -38,6 +45,15 @@ client.on('message', async msg => {
         if (/(opção|opcao|menu|oi|olá|ola|dia|tarde|noite)/i.test(msg.body)) {
             try { await chat.sendStateTyping(); } catch {}
             await delay(1200);
+
+            if (!isHorarioComercial()) {
+                await client.sendMessage(
+                    msg.from,
+                    '⚠️ AVISO: O nosso horário de atendimento é de 7h às 17h, de segunda a sexta-feira.\n' +
+                    'Sua mensagem será respondida assim que possível, dentro do nosso horário de funcionamento.'
+                );
+                return;
+            }
 
             await client.sendMessage(
                 msg.from,
@@ -63,7 +79,7 @@ client.on('message', async msg => {
             );
             return;
         }
-
+        
         // OPÇÃO 2 - DECLARAÇÕES
         if (msg.body === '2') {
             try { await chat.sendStateTyping(); } catch {}
@@ -81,11 +97,26 @@ client.on('message', async msg => {
                 '7️⃣ - Curso/Isenção\n' +
                 '9️⃣ - Outra (especifique)\n\n' +
                 '⚠️ Após escolher, informe também:\n' +
-                '- Nome do aluno\n- '+
-                'Série\n- '+
-                'Nome do solicitante\n- '+
-                'CPF do solicitante\n- '+
+                '- Nome do aluno\n- ' +
+                'Série\n- ' +
+                'Nome do solicitante\n- ' +
+                'CPF do solicitante\n- ' +
                 'Grau de parentesco com o aluno'
+            );
+            return;
+        }
+
+        // Condição FINAL para mensagem de agradecimento
+        if (
+            msg.body.length > 5 && // Mensagem com pelo menos 5 caracteres (para não responder a 'oi')
+            !/(opção|opcao|menu|oi|olá|ola|dia|tarde|noite|1|2)/i.test(msg.body) // Não é uma das opções principais
+        ) {
+            try { await chat.sendStateTyping(); } catch {}
+            await delay(1000);
+
+            await client.sendMessage(
+                msg.from,
+                'Obrigado pelas informações, após a conferência sua solicitação será encaminhada e respondida o mais breve possível.'
             );
             return;
         }
