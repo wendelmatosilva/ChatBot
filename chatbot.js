@@ -230,7 +230,7 @@ client.on('message', async msg => {
             userState[from] = { step: 'declaracoes_tipo', tipoDeclaracao: null, data: { nomeAluno: '', ano: '' } };
             await client.sendMessage(from,
                 '📑 Você escolheu *Declarações*.\n\nDigite a letra da declaração desejada:\n' +
-                'A - Matrícula\nB - Bolsa Família\nC - Emprego/Estágio\nD - Carteira de Estudante\nE - Curso/Isenção\nF - Outra (especifique)'
+                'A - Matrícula\nB - Bolsa Família\nC - Emprego/Estágio\nD - Carteira de Estudante\nE - Curso/Isenção\nF - Outra (especifique no nome do aluno. EX: Nome do aluno - declaração para XXXXXX)'
             );
             return;
         }
