@@ -257,7 +257,7 @@ client.on('message', async msg => {
                 'C': 'Emprego/Estágio',
                 'D': 'Carteira de Estudante',
                 'E': 'Curso/Isenção',
-                'F': 'Outra (especifique)'
+                'F': 'Outra (especifique no nome do aluno. EX: Nome do aluno - declaração para XXXXXX)'
             };
             const tipoTexto = tipos[userState[from].tipoDeclaracao] || 'Declaração';
 
@@ -294,6 +294,7 @@ client.on('message', async msg => {
                 'declaracoes_tipo': '⚠️ Digite apenas A, B, C, D, E ou F:',
                 'declaracoes_nome_aluno': '⚠️ Digite o *nome completo do aluno*:',
                 'declaracoes_ano': '⚠️ Informe a *série do aluno*:'
+                
             };
 
             if (mensagensErro[etapa]) {
